@@ -15,7 +15,10 @@ for top_level_comment in submission.comments:
         break
     if top_level_comment.body != "[deleted]":
        comment_text = top_level_comment.body_html
-       link = comment_text[comment_text.index("href=\"") + 6:comment_text.rindex("\">")]
+       #link = comment_text[comment_text.index("href=\"") + 6:comment_text.rindex("\">")]
+       start = comment_text.find("href=\"") + 6
+       end = comment_text.find("\">", start)
+       link = comment_text[start:end]
        print((link))
     COUNTER += 1
 
