@@ -11,7 +11,7 @@ submission.comments.replace_more(limit=0)
 
 COUNTER = 0
 for top_level_comment in submission.comments:
-   
+        
     #stop once comment is reached
     if COUNTER == LIMIT:
         break
@@ -28,7 +28,7 @@ for top_level_comment in submission.comments:
        description_start = comment_text.find(link) + len(link) + BUFFER_SIZE
        description_end = comment_text.find("</a", description_start)
        description = comment_text[description_start:description_end]
-       print(description)
-    
+       print("(%d) " % top_level_comment.score + top_level_comment.author.name + " -   " +  description)
+        
     COUNTER += 1
 
