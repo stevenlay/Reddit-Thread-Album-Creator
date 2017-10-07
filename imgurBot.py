@@ -1,8 +1,13 @@
 import praw
 import sys
+from imgurpython import ImgurClient 
+import config 
+import requests
+
 LIMIT = 5
 HREF_SIZE = 6
 BUFFER_SIZE = 2
+
 #bot
 reddit = praw.Reddit("imgurAlbum")
 submission = reddit.submission(url="%s" % sys.argv[1])
