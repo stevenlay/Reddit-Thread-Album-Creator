@@ -1,1 +1,2 @@
-ok = 0
+client_id = "fladjflkasd"
+client_secret = "lakjsdfklsd"

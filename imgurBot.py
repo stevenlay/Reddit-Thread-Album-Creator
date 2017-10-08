@@ -8,6 +8,10 @@ LIMIT = 5
 HREF_SIZE = 6
 BUFFER_SIZE = 2
 
+client_id = config.client_id
+client_secret = config.client_secret
+client = ImgurClient(client_id, client_secret)
+
 #bot
 reddit = praw.Reddit("imgurAlbum")
 submission = reddit.submission(url="%s" % sys.argv[1])
