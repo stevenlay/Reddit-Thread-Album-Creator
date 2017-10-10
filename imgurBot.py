@@ -24,6 +24,7 @@ title_and_link = submission.title + " - " + submission.url
 print(title_and_link)
 albumConfig = {
     'title': submission.title,
+    'description': sys.argv[1]
 }
 
 album = client.create_album(albumConfig)
@@ -32,7 +33,11 @@ print(album["id"])
 submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
 
-image = client.upload_from_url(submission.url, album=album["id"], anon=False)
+img_cfg = {
+    'album': album["id"]
+}
+
+image = client.upload_from_url(submission.url, config=img_cfg, anon=False)
 
 
 
