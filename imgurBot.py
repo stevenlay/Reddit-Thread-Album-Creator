@@ -43,9 +43,9 @@ try:
 except:
     print("Timed out")
 
-creds = client.authorize(input("Pin: "), 'pin')
+creds = client.authorize(pinNum)
 client.set_user_auth(creds['access_token'], creds['refresh_token'])
-
+print("Authorized")
 
 #bot
 reddit = praw.Reddit("imgurAlbum")
@@ -55,11 +55,10 @@ print(title_and_link)
 albumConfig = {
     'title': submission.title,
     'description': sys.argv[1],
-    'ids': ["jaqIcKk", "ZLfpBd2"]
 }
 
 album = client.create_album(albumConfig)
-print(album["id"])
+#print(album["id"])
 
 submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
@@ -100,10 +99,11 @@ for top_level_comment in submission.comments:
     COUNTER += 1
     
     photoConfig = {
-            'album': deletehash,
-            'description': tag,
+            'description': tag
     }
 
     image = client.upload_from_url(link, config=photoConfig, anon=True)
 
-print("https://imgur.com/a/" + album["id"])
+album_link = ("https://imgur.com/a/" + album["id"])
+print(album_link)
+driver.get(album_link)
