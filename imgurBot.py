@@ -33,6 +33,16 @@ password.clear()
 user.send_keys(client_user)
 password.send_keys(client_password)
 
+driver.find_element_by_name("allow").click()
+try:
+    pinNum_pres = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "pin"))
+    )
+    pinNum = driver.find_element_by_name("pin").get_attribute("value")
+    print(pinNum)
+except:
+    print("Timed out")
+
 creds = client.authorize(input("Pin: "), 'pin')
 client.set_user_auth(creds['access_token'], creds['refresh_token'])
 
