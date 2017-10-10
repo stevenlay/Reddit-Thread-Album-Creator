@@ -13,10 +13,16 @@ client_secret = lib.config.client_secret
 client_user = lib.config.client_user
 client_password = lib.config.client_password
 client = ImgurClient(client_id, client_secret)
+print (client.get_auth_url('pin'))
+creds = client.authorize(input("Pin: "), 'pin')
+client.set_user_auth(creds['access_token'], creds['refresh_token'])
+
 
 #bot
 reddit = praw.Reddit("imgurAlbum")
 submission = reddit.submission(url="%s" % sys.argv[1])
+print(submission.title)
+print(submission.url)
 submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
 
