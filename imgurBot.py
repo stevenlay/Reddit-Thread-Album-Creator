@@ -4,7 +4,7 @@ from imgurpython import ImgurClient
 import lib.config 
 import requests
 
-LIMIT = 2
+LIMIT = 5
 HREF_SIZE = 6
 BUFFER_SIZE = 2
 
@@ -31,6 +31,10 @@ print(album["id"])
 
 submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
+
+image = client.upload_from_url(submission.url, album=album["id"], anon=False)
+
+
 
 COUNTER = 0
 for top_level_comment in submission.comments:     
