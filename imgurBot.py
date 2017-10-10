@@ -1,3 +1,10 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 import praw
 import sys
 from imgurpython import ImgurClient 
@@ -13,9 +20,22 @@ client_secret = lib.config.client_secret
 client_user = lib.config.client_user
 client_password = lib.config.client_password
 client = ImgurClient(client_id, client_secret)
-print (client.get_auth_url('pin'))
+
+auth_url = (client.get_auth_url('pin'))
+print(auth_url)
+driver = webdriver.Chrome()
+driver.get(auth_url)
+
+user = driver.find_element_by_xpath('//*[@id="username"]')
+user.clear()
+password = driver.find_element_by_xpath('//*[@id="password"]')
+password.clear()
+user.send_keys(client_user)
+password.send_keys(client_password)
+
 creds = client.authorize(input("Pin: "), 'pin')
 client.set_user_auth(creds['access_token'], creds['refresh_token'])
+
 
 #bot
 reddit = praw.Reddit("imgurAlbum")
@@ -24,7 +44,8 @@ title_and_link = submission.title + " - " + submission.url
 print(title_and_link)
 albumConfig = {
     'title': submission.title,
-    'description': sys.argv[1]
+    'description': sys.argv[1],
+    'ids': ["jaqIcKk", "ZLfpBd2"]
 }
 
 album = client.create_album(albumConfig)
@@ -69,10 +90,10 @@ for top_level_comment in submission.comments:
     COUNTER += 1
     
     photoConfig = {
-            'album': album["id"],
+            'album': deletehash,
             'description': tag,
     }
 
-    image = client.upload_from_url(link, config=photoConfig, anon=False)
+    image = client.upload_from_url(link, config=photoConfig, anon=True)
 
 print("https://imgur.com/a/" + album["id"])
