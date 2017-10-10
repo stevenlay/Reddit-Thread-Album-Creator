@@ -21,24 +21,34 @@ submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
 
 COUNTER = 0
-for top_level_comment in submission.comments:
-        
+for top_level_comment in submission.comments:     
     #stop once comment is reached
     if COUNTER == LIMIT:
         break
     if top_level_comment.body != "[deleted]":
-       comment_text = top_level_comment.body_html
-       
-       #get image link posted
-       image_start = comment_text.find("href=\"") + HREF_SIZE
-       image_end = comment_text.find("\">", image_start)
-       link = comment_text[image_start:image_end]
-       
-       description_start = comment_text.find(link) + len(link) + BUFFER_SIZE
-       description_end = comment_text.find("</a", description_start)
-       description = comment_text[description_start:description_end]
-       print("(%d) " % top_level_comment.score + top_level_comment.author.name + " -  " +          description)
-       print(link)
+        comment_text = top_level_comment.body_html
+        #get image link posted
+        image_start = comment_text.find("href=\"") + HREF_SIZE
+        image_end = comment_text.find("\">", image_start)
+        link = comment_text[image_start:image_end]
+     
+           
+
+    description_start = comment_text.find(link) + len(link) + BUFFER_SIZE
+    description_end = comment_text.find("</a", description_start)
+    description = comment_text[description_start:description_end]
+    print("(%d) " % top_level_comment.score + top_level_comment.author.name + " -  " +          description)
+
+    if "/a/" in link:
+        album_id = link[len("https://imgur.com/a/"):]
+        #print("THE IMG ID FOR THE ALBUM IS: " + img_id)           
+
+        direct_img = client.get_album_images(album_id)
+        if len(direct_img) == 1:
+            imgur_img = direct_img[0].link
+            print(imgur_img)
+    else: 
+        print(link)
 
     COUNTER += 1
 
