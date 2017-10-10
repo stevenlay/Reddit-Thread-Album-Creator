@@ -4,7 +4,7 @@ from imgurpython import ImgurClient
 import lib.config 
 import requests
 
-LIMIT = 10
+LIMIT = 2
 HREF_SIZE = 6
 BUFFER_SIZE = 2
 
@@ -17,12 +17,18 @@ print (client.get_auth_url('pin'))
 creds = client.authorize(input("Pin: "), 'pin')
 client.set_user_auth(creds['access_token'], creds['refresh_token'])
 
-
 #bot
 reddit = praw.Reddit("imgurAlbum")
 submission = reddit.submission(url="%s" % sys.argv[1])
-print(submission.title)
-print(submission.url)
+title_and_link = submission.title + " - " + submission.url
+print(title_and_link)
+albumConfig = {
+    'title': submission.title,
+}
+
+album = client.create_album(albumConfig)
+print(album["id"])
+
 submission.comment_sort = "top"
 submission.comments.replace_more(limit=0)
 
@@ -41,16 +47,23 @@ for top_level_comment in submission.comments:
     description_start = comment_text.find(link) + len(link) + BUFFER_SIZE
     description_end = comment_text.find("</a", description_start)
     description = comment_text[description_start:description_end]
-    print("(%d) " % top_level_comment.score + "\"" + description + "\" - " + top_level_comment.author.name)
-
+    tag = ("(%d) " % top_level_comment.score + "\"" + description + "\" - " + top_level_comment.author.name)
+    print(tag)
     if "/a/" in link:
         album_id = link[len("https://imgur.com/a/"):]
         direct_img = client.get_album_images(album_id)
         if len(direct_img) == 1:
             imgur_img = direct_img[0].link
-            print(imgur_img)
-    else: 
+            link = imgur_img
         print(link)
 
     COUNTER += 1
+    
+    photoConfig = {
+            'album': album["id"],
+            'description': tag,
+    }
 
+    image = client.upload_from_url(link, config=photoConfig, anon=False)
+
+print("https://imgur.com/a/" + album["id"])
