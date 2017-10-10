@@ -99,10 +99,11 @@ for top_level_comment in submission.comments:
     COUNTER += 1
     
     photoConfig = {
+            'album': album["id"],
             'description': tag
     }
 
-    image = client.upload_from_url(link, config=photoConfig, anon=True)
+    image = client.upload_from_url(link, config=photoConfig, anon=False)
 
 album_link = ("https://imgur.com/a/" + album["id"])
 print(album_link)
